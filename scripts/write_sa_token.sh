@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 export ENVIRONMENT=$1
 
-export STACK_SLUG=$(cat ${CLUSTER}.auto.tfvars.json | jq -r .stack_slug)
+export STACK_SLUG=$(cat ${ENVIRONMENT}.auto.tfvars.json | jq -r .stack_slug)
 
 terraform init
 terraform workspace select ${ENVIRONMENT}
