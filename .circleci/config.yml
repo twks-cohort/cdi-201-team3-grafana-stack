@@ -49,8 +49,8 @@ commands:
       - op/env:
           env-file: << parameters.source-env >>
       - run:
-          name: write << parameters.instance >>.auto.tfvars.json from template
-          command: op inject -i environments/<< parameters.instance >>.auto.tfvars.json.tpl -o << parameters.instance >>.auto.tfvars.json
+          name: write << parameters.tenant >>.auto.tfvars.json from template
+          command: op inject -i environments/<< parameters.tenant >>.auto.tfvars.json.tpl -o << parameters.tenant >>.auto.tfvars.json
       - run:
           name: set ~/.terraformrc
           command: op inject -i tpl/terraformrc.tpl -o ~/.terraformrc
@@ -71,7 +71,7 @@ jobs:
       shell:
         description: shell option directive
         type: string
-        default: /bin/bach -eo pipefail
+        default: /bin/bash -eo pipefail
       source-env:
         description: env file to source to BASH_ENV
         type: string
@@ -83,7 +83,7 @@ jobs:
       - checkout
       - setup_remote_docker
       - set-environment:
-          cluster: << parameters.tenant >>
+          tenant: << parameters.tenant >>
           source-env: << parameters.source-env >>
       - run:
           name: test << parameters.tenant >> configuration
@@ -91,10 +91,10 @@ jobs:
       - when:
           condition:
             -equal: [ << parameters.test-only >>, false]
-        steps:
-          - run:
-              name: write service account token
-              command: bash scripts/write_sa_token.sh << parameters.tenant >>
+          steps:
+            - run:
+                name: write service account token
+                command: bash scripts/write_sa_token.sh << parameters.tenant >>
 
 workflows:
   version: 2
@@ -104,7 +104,7 @@ workflows:
       - terraform/plan:
           name: grafana stack change plan
           context: << pipeline.parameters.context >>
-          shell: << pipeline.parameters.shell-options >>
+          shell: op run --env-file op.nonprod.env -- /bin/bash -eo pipefail
           workspace: prod
           terraform-version: << pipeline.parameters.terraform-version >>
           before-terraform:
@@ -120,7 +120,7 @@ workflows:
       - terraform/apply:
           name: grafana stack release
           context: << pipeline.parameters.context >>
-          shell: << pipeline.parameters.shell-options >>
+          shell: op run --env-file op.nonprod.env -- /bin/bash -eo pipefail
           workspace: prod
           terraform-version: << pipeline.parameters.terraform-version >>
           before-terraform:
@@ -133,7 +133,6 @@ workflows:
       - validate-and-store-service-token:
           name: test prod grafana tenant
           context: << pipeline.parameters.context >>
-          shell: << pipeline.parameters.shell-options >>
           tenant: prod
           source-env: op.env
           requires:
@@ -149,7 +148,7 @@ workflows:
   #         on-tag: true
   #         filters: *on-tag-main
 
-  nightly iam profiles configuration validation:
+  nightly grafana stack configuration validation:
     triggers:
       - schedule:
           cron: "0 1 * * *"
@@ -158,8 +157,9 @@ workflows:
               only:
                 - main
     jobs:
-      - validate configuration and store profile credentials:
+      - validate-and-store-service-token:
           name: nightly prod grafana stack validation
           context: << pipeline.parameters.context >>
           tenant: prod
+          source-env: op.env
           test-only: true
