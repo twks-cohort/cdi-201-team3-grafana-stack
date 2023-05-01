@@ -94,7 +94,7 @@ jobs:
           steps:
             - run:
                 name: write service account token
-                command: bash scripts/write_sa_token.sh << parameters.tenant >>
+                command: bash scripts/write_stack_data.sh << parameters.tenant >>
 
 workflows:
   version: 2
