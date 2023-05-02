@@ -148,18 +148,18 @@ workflows:
   #         on-tag: true
   #         filters: *on-tag-main
 
-  nightly grafana stack configuration validation:
-    triggers:
-      - schedule:
-          cron: "0 1 * * *"
-          filters:
-            branches:
-              only:
-                - main
-    jobs:
-      - validate-and-store-service-token:
-          name: nightly prod grafana stack validation
-          context: << pipeline.parameters.context >>
-          tenant: prod
-          source-env: op.env
-          test-only: true
+#  nightly grafana stack configuration validation:
+#    triggers:
+#      - schedule:
+#          cron: "0 1 * * *"
+#          filters:
+#            branches:
+#              only:
+#                - main
+#    jobs:
+#      - validate-and-store-service-token:
+#          name: nightly prod grafana stack validation
+#          context: << pipeline.parameters.context >>
+#          tenant: prod
+#          source-env: op.env
+#          test-only: true
