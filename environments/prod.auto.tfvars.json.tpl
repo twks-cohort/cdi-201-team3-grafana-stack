@@ -1,6 +1,6 @@
 {
     "org_name": "myOrg",
-    "team_name": "team##"
+    "team_name": "team##",
     "stack_name": "team##-201-stack",
     "stack_slug": "team##201stack",
     "sa_name": "Prod Management Cloud Service Account",
