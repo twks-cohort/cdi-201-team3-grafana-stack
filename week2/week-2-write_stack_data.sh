@@ -13,4 +13,3 @@ echo "$(terraform output -raw logs_endpoint)/loki/api/v1/push" | opw write team0
 terraform output -raw logs_username | opw write team0-201-svc-grafana ${STACK_SLUG}_logs_username -
 terraform output -raw traces_endpoint | opw write team0-201-svc-grafana ${STACK_SLUG}_traces_endpoint -
 terraform output -raw traces_username | opw write team0-201-svc-grafana ${STACK_SLUG}_traces_username -
-
