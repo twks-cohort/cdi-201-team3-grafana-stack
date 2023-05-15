@@ -11,7 +11,7 @@ terraform {
     hostname     = "app.terraform.io"
     organization = "twks-cohort"
     workspaces {
-      prefix = "cdi-201-team##-grafana-stack-"
+      prefix = "team##-201-grafana-stack-"
     }
   }
 }
