@@ -1,8 +1,8 @@
 {
-    "org_name": "myOrg",
-    "team_name": "team##",
-    "stack_name": "team##201stack",
-    "stack_slug": "team##201stack",
+    "org_name": "nprl",
+    "team_name": "team3",
+    "stack_name": "team3201stack",
+    "stack_slug": "team3201stack",
     "sa_name": "Prod Management Cloud Service Account",
     "sa_token_name": "prod_management_sa_key"
 }
