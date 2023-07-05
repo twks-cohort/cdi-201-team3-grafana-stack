@@ -27,3 +27,10 @@ resource "grafana_cloud_stack_service_account_token" "management" {
   service_account_id = grafana_cloud_stack_service_account.management.id
 }
 
+
+resource "grafana_cloud_api_key" "metrics_publisher" {
+  provider = grafana.admin
+  cloud_org_slug = var.org_name
+  name           = "publisher-key"
+  role           = "MetricsPublisher"
+}
